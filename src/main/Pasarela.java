@@ -11,7 +11,8 @@ public class Pasarela extends Thread{
 	}
 	
 	public synchronized void entrar(Persona persona) {
-		System.out.println("La persona "+persona.darId() + " va a entrar en la direccion " + persona.darDireccion());
+		
+		System.out.println("La persona "+persona.darId() + " esta en la cola de la direccion " + persona.darDireccion());
 		while (Pasarela.darCaminando() != persona.darDireccion() && Pasarela.darCaminando() != -1 ) {
 			try {
 				wait();
@@ -19,6 +20,7 @@ public class Pasarela extends Thread{
 				e.printStackTrace();
 			}
 		}
+		
 		
 		System.out.println("La persona "+persona.darId() + " entro en la direccion " + persona.darDireccion());
 		if (persona.darDireccion() ==0) {
@@ -40,7 +42,7 @@ public class Pasarela extends Thread{
 
 	}
 	
-	public void salir(Persona persona) {
+	public synchronized void salir(Persona persona) {
 		System.out.println("La persona "+persona.darId() + " salio en la direccion "+ persona.darDireccion());
 		if (persona.darDireccion() ==0) {
 			izq--;
@@ -52,6 +54,7 @@ public class Pasarela extends Thread{
 		if (this.Total() == 0) {
 			Pasarela.cambiarCaminando(-1);
 		}
+		notifyAll();
 		
 	}
 	
